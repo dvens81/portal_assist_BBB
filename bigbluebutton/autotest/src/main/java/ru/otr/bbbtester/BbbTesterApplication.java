@@ -46,19 +46,22 @@ public class BbbTesterApplication {
             driver.switchTo().window(tabs.get(tabs.size() - 1));
         }
         driver.get(bbbUrl);
-        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
-        Disposable subscribe = usernameEd.subscribe(uname -> {
-            uname.sendKeys(userName);
-            Mono<WebElement> joinBtn = Mono.just(driver.findElement(By.cssSelector(".submit_btn")));
-            Disposable subscribe1 = joinBtn.subscribe(jn -> {
-                jn.submit();
-                new WebDriverWait(driver, waitForElement)
-                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-listen")))
+        new WebDriverWait(driver, waitForElement)
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id301")))
                         .click();
-            });
-            subscribe1.dispose();
-        });
-        subscribe.dispose();
+//        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
+//        Disposable subscribe = usernameEd.subscribe(uname -> {
+//            uname.sendKeys(userName);
+//            Mono<WebElement> joinBtn = Mono.just(driver.findElement(By.cssSelector(".submit_btn")));
+//            Disposable subscribe1 = joinBtn.subscribe(jn -> {
+//                jn.submit();
+//                new WebDriverWait(driver, waitForElement)
+//                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-listen")))
+//                        .click();
+//            });
+//            subscribe1.dispose();
+//        });
+//        subscribe.dispose();
     }
 
     public static void main(String[] args) throws InterruptedException {
