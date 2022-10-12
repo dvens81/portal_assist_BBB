@@ -46,8 +46,13 @@ public class BbbTesterApplication {
             driver.switchTo().window(tabs.get(tabs.size() - 1));
         }
         driver.get(bbbUrl);
+        driver.findElement(By.cssSelector("#details-button")).click();
+        driver.findElement(By.cssSelector("#proceed-link")).click();
+        driver.findElement(By.cssSelector(".form-control[type=text]")).sendKeys("user");
+        driver.findElement(By.cssSelector(".form-control[type=password]")).sendKeys("Qwerty123!");
+        driver.findElement(By.cssSelector(".btn-outline-primary")).click();
         new WebDriverWait(driver, waitForElement)
-                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id301")))
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(2) .btn-outline-primary")))
                         .click();
 //        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
 //        Disposable subscribe = usernameEd.subscribe(uname -> {
@@ -110,7 +115,7 @@ public class BbbTesterApplication {
     }
 
     private static void loadVariables() {
-        File configFile = new File("bbb-config.cfg");
+        File configFile = new File("C:\\Projects\\portal_assist\\bigbluebutton\\autotest\\bbb-config.cfg");
         try {
             if (!configFile.exists()) {
                 throw new RuntimeException("no configuration file");
@@ -150,7 +155,7 @@ public class BbbTesterApplication {
                             break;
                         case "driver":
                             driverName = ss1;
-                            System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
+                            //System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
                             driver = new ChromeDriver();
                             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
                             driver.manage().window().maximize();
