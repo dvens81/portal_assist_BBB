@@ -131,7 +131,7 @@ public class BbbTesterApplication {
     }
 
     private static void loadVariables() {
-        File configFile = new File("C:\\Projects\\portal_assist\\bigbluebutton\\autotest\\bbb-config.cfg");
+        File configFile = new File("bbb-config.cfg");
         try {
             if (!configFile.exists()) {
                 throw new RuntimeException("no configuration file");
@@ -171,7 +171,7 @@ public class BbbTesterApplication {
                             break;
                         case "driver":
                             driverName = ss1;
-                            //System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
+                            System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
                             ChromeOptions options = new ChromeOptions();
                             options.addArguments("start-maximized");
                             options.addArguments("-ignore-certificate-errors");
