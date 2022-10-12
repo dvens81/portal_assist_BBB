@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.SpringApplication;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
+
 /**
  * @author chernov.vadim
  * @since 24.04.2020
@@ -38,7 +40,7 @@ public class BbbTesterApplication {
     private static ArrayList<String> tabs;
     private static LocalDateTime start;
 
-    private static void loadPage(String user, long userNum) {
+    private static void loadPage(String user, long userNum) throws InterruptedException {
         String userName = user + userNum;
         if (userNum > 0) {
             ((JavascriptExecutor) driver).executeScript("window.open()");
@@ -46,14 +48,25 @@ public class BbbTesterApplication {
             driver.switchTo().window(tabs.get(tabs.size() - 1));
         }
         driver.get(bbbUrl);
-        driver.findElement(By.cssSelector("#details-button")).click();
-        driver.findElement(By.cssSelector("#proceed-link")).click();
-        driver.findElement(By.cssSelector(".form-control[type=text]")).sendKeys("user");
-        driver.findElement(By.cssSelector(".form-control[type=password]")).sendKeys("Qwerty123!");
-        driver.findElement(By.cssSelector(".btn-outline-primary")).click();
-        new WebDriverWait(driver, waitForElement)
-                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(2) .btn-outline-primary")))
-                        .click();
+        // for OpenMeetings
+
+        //driver.findElement(By.cssSelector("#details-button")).click();
+        //driver.findElement(By.cssSelector("#proceed-link")).click();
+        if (driver.findElements(By.cssSelector(".form-control[name='credentials:login']")).size() > 0) {
+            driver.findElement(By.cssSelector(".form-control[type=text]")).sendKeys("user");
+            TimeUnit.MILLISECONDS.sleep(300);
+            driver.findElement(By.cssSelector(".form-control[type=password]")).sendKeys("Qwerty123!");
+            driver.findElement(By.cssSelector(".btn-outline-primary")).click();
+            new WebDriverWait(driver, waitForElement)
+                    .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(2) .btn-outline-primary")))
+                    .click();
+        } else
+
+            new WebDriverWait(driver, waitForElement)
+                    .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(2) .btn-outline-primary")))
+                    .click();
+
+        // for BBB
 //        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
 //        Disposable subscribe = usernameEd.subscribe(uname -> {
 //            uname.sendKeys(userName);
@@ -75,14 +88,13 @@ public class BbbTesterApplication {
         int delay = (start.getHour() - time.getHour()) * 3600000;
         delay += (start.getMinute() - time.getMinute()) * 60000;
         delay += (start.getSecond() - time.getSecond()) * 1000;
-        if(delay>0) {
-            System.out.println("Waiting " + delay/1000 + "  sec ");
+        if (delay > 0) {
+            System.out.println("Waiting " + delay / 1000 + "  sec ");
             Thread.sleep(delay);
             System.out.println("Start....");
 
-        }
-        else {
-            System.out.println("Start time " + start+" has passed, start is not slow)))");
+        } else {
+            System.out.println("Start time " + start + " has passed, start is not slow)))");
         }
 
         SpringApplication.run(BbbTesterApplication.class, args);
@@ -90,7 +102,11 @@ public class BbbTesterApplication {
                 .interval(Duration.ofMillis(startInterval))
                 .map(tick -> {
                     if (tick < count) {
-                        loadPage(user, tick);
+                        try {
+                            loadPage(user, tick);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         return "---===>>> loading " + user + tick;
                     }
                     return "All users are logged in.";
@@ -125,7 +141,7 @@ public class BbbTesterApplication {
 
                     String[] split = l.split("#");
                     String[] ss = split[0].split("=");
-                    if(ss.length!=2)
+                    if (ss.length != 2)
                         throw new RuntimeException("invalid bbb-config.cfg file structure");
 
                     String ss0 = ss[0].trim();
@@ -156,9 +172,12 @@ public class BbbTesterApplication {
                         case "driver":
                             driverName = ss1;
                             //System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
-                            driver = new ChromeDriver();
-                            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-                            driver.manage().window().maximize();
+                            ChromeOptions options = new ChromeOptions();
+                            options.addArguments("start-maximized");
+                            options.addArguments("-ignore-certificate-errors");
+                            driver = new ChromeDriver(options);
+                            driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+                            //driver.manage().window().maximize();
 
                             break;
                         case "start":
