@@ -57,14 +57,11 @@ public class BbbTesterApplication {
             TimeUnit.MILLISECONDS.sleep(300);
             driver.findElement(By.cssSelector(".form-control[type=password]")).sendKeys(password);
             driver.findElement(By.cssSelector(".btn-outline-primary")).click();
-            new WebDriverWait(driver, waitForElement)
-                    .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(2) .btn-outline-primary")))
-                    .click();
+            new WebDriverWait(driver, waitForElement).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".start_step2"))).click();
+            new WebDriverWait(driver, waitForElement).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(5) .btn-outline-primary"))).click();
         } else
-
-            new WebDriverWait(driver, waitForElement)
-                    .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(2) .btn-outline-primary")))
-                    .click();
+            new WebDriverWait(driver, waitForElement).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".start_step2"))).click();
+        new WebDriverWait(driver, waitForElement).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(5) .btn-outline-primary"))).click();
 
         // for BBB
 //        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
