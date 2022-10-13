@@ -34,7 +34,7 @@ import static java.lang.Thread.sleep;
 @SpringBootApplication
 public class BbbTesterApplication {
     private static WebDriver driver;
-    private static String user, bbbUrl, driverName;
+    private static String user, bbbUrl, driverName, login, password;
     private static int count;
     private static int startInterval, stopInterval, workTime, waitForElement;
     private static ArrayList<String> tabs;
@@ -53,9 +53,9 @@ public class BbbTesterApplication {
         //driver.findElement(By.cssSelector("#details-button")).click();
         //driver.findElement(By.cssSelector("#proceed-link")).click();
         if (driver.findElements(By.cssSelector(".form-control[name='credentials:login']")).size() > 0) {
-            driver.findElement(By.cssSelector(".form-control[type=text]")).sendKeys("user");
+            driver.findElement(By.cssSelector(".form-control[type=text]")).sendKeys(login);
             TimeUnit.MILLISECONDS.sleep(300);
-            driver.findElement(By.cssSelector(".form-control[type=password]")).sendKeys("Qwerty123!");
+            driver.findElement(By.cssSelector(".form-control[type=password]")).sendKeys(password);
             driver.findElement(By.cssSelector(".btn-outline-primary")).click();
             new WebDriverWait(driver, waitForElement)
                     .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".rooms-table tr:nth-child(2) .btn-outline-primary")))
@@ -131,7 +131,7 @@ public class BbbTesterApplication {
     }
 
     private static void loadVariables() {
-        File configFile = new File("bbb-config.cfg");
+        File configFile = new File("C:\\Projects\\portal_assist\\bigbluebutton\\autotest\\om-config.cfg");
         try {
             if (!configFile.exists()) {
                 throw new RuntimeException("no configuration file");
@@ -150,6 +150,12 @@ public class BbbTesterApplication {
                     switch (ss0) {
                         case "user":
                             user = ss1;
+                            break;
+                        case "login":
+                            login = ss1;
+                            break;
+                        case "password":
+                            password = ss1;
                             break;
                         case "count":
                             count = Integer.parseInt(ss1);
@@ -171,7 +177,7 @@ public class BbbTesterApplication {
                             break;
                         case "driver":
                             driverName = ss1;
-                            System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
+                            //System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
                             ChromeOptions options = new ChromeOptions();
                             options.addArguments("start-maximized");
                             options.addArguments("-ignore-certificate-errors");
