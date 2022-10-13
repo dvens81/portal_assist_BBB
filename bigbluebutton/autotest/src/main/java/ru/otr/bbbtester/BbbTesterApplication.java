@@ -131,7 +131,7 @@ public class BbbTesterApplication {
     }
 
     private static void loadVariables() {
-        File configFile = new File("C:\\Projects\\portal_assist\\bigbluebutton\\autotest\\om-config.cfg");
+        File configFile = new File("om-config.cfg");
         try {
             if (!configFile.exists()) {
                 throw new RuntimeException("no configuration file");
@@ -177,7 +177,7 @@ public class BbbTesterApplication {
                             break;
                         case "driver":
                             driverName = ss1;
-                            //System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
+                            System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
                             ChromeOptions options = new ChromeOptions();
                             options.addArguments("start-maximized");
                             options.addArguments("-ignore-certificate-errors");
@@ -202,11 +202,13 @@ public class BbbTesterApplication {
 
                 System.out.println("driver   = " + driverName);
                 System.out.println("start    = " + start);
+                System.out.println("login    = " + login);
+                System.out.println("password = " + password);
                 System.out.println("user     = " + user);
                 System.out.println("count    = " + count);
                 System.out.println("host     = " + bbbUrl);
-                System.out.println("startInterval = " + startInterval);
-                System.out.println("stopInterval  = " + stopInterval);
+                System.out.println("startInterval   = " + startInterval);
+                System.out.println("stopInterval    = " + stopInterval);
                 System.out.println("waitForElement  = " + waitForElement + " sec");
                 System.out.println("++++++++++++++++++++++++++++++++++++++++++");
             }
