@@ -161,7 +161,7 @@ public class BbbTesterApplication {
                             options.addArguments("use-fake-ui-for-media-stream");
                             //options.addArguments("use-fake-device-for-media-stream");
                             driver = new ChromeDriver(options);
-                            driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+                            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
                             driver.manage().window().maximize();
 
                             break;
