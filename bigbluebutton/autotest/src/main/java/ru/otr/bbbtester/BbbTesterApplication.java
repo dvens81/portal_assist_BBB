@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.SpringApplication;
@@ -55,6 +56,12 @@ public class BbbTesterApplication {
                 new WebDriverWait(driver, waitForElement)
                         .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-listen")))
                         .click();
+                new WebDriverWait(driver, waitForElement)
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-video_off")))
+                        .click();
+                new WebDriverWait(driver, waitForElement)
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#preview")));
+                driver.findElement(By.cssSelector(".sc-fvxzrP .sc-egiyK")).click();
             });
             subscribe1.dispose();
         });
@@ -148,8 +155,13 @@ public class BbbTesterApplication {
                         case "driver":
                             driverName = ss1;
                             //System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
-                            driver = new ChromeDriver();
-                            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+                            ChromeOptions options = new ChromeOptions();
+                            options.addArguments("-ignore-certificate-errors");
+                            options.addArguments("--use-fake-device-for-media-stream --use-file-for-fake-video-capture=C:\\Download\\ffmpeg\\bin\\output.mjpeg");
+                            options.addArguments("use-fake-ui-for-media-stream");
+                            //options.addArguments("use-fake-device-for-media-stream");
+                            driver = new ChromeDriver(options);
+                            driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
                             driver.manage().window().maximize();
 
                             break;
