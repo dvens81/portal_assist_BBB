@@ -100,7 +100,7 @@ public class BbbTesterApplication {
     }
 
     private static void loadVariables() {
-        File configFile = new File("C:\\Projects\\portal_assist\\bigbluebutton\\autotest\\bbb-config.cfg");
+        File configFile = new File("C:\\Projects\\portal_assist\\bigbluebutton\\autotest\\jitsi-config.cfg");
         try {
             if (!configFile.exists()) {
                 throw new RuntimeException("no configuration file");
@@ -111,7 +111,7 @@ public class BbbTesterApplication {
                     String[] split = l.split("#");
                     String[] ss = split[0].split("=");
                     if(ss.length!=2)
-                        throw new RuntimeException("invalid bbb-config.cfg file structure");
+                        throw new RuntimeException("invalid jitsi-config.cfg file structure");
 
                     String ss0 = ss[0].trim();
                     String ss1 = ss[1].trim();
