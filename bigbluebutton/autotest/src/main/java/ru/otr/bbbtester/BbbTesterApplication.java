@@ -26,10 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
-/**
- * @author chernov.vadim
- * @since 24.04.2020
- */
+
 @SpringBootApplication
 public class BbbTesterApplication {
     private static WebDriver driver;
@@ -39,7 +36,7 @@ public class BbbTesterApplication {
     private static ArrayList<String> tabs;
     private static LocalDateTime start;
 
-    private static void loadPage(String user, long userNum) {
+    private static void loadPage(String user, long userNum) throws InterruptedException {
         String userName = user + userNum;
         if (userNum > 0) {
             ((JavascriptExecutor) driver).executeScript("window.open()");
@@ -49,30 +46,8 @@ public class BbbTesterApplication {
         driver.get(bbbUrl);
         WebElement toolbox = driver.findElement(By.cssSelector(".new-toolbox"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].style.position='static';", toolbox);
+        sleep(2000);
         driver.findElement(By.cssSelector(".audio-preview .toolbox-button")).click();
-//        new WebDriverWait(driver, waitForElement)
-////                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#new-toolbox .audio-preview [fill-rule=evenodd]")))
-////                .click();
-
-//        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
-//        Disposable subscribe = usernameEd.subscribe(uname -> {
-//            uname.sendKeys(userName);
-//            Mono<WebElement> joinBtn = Mono.just(driver.findElement(By.cssSelector(".submit_btn")));
-//            Disposable subscribe1 = joinBtn.subscribe(jn -> {
-//                jn.submit();
-//                new WebDriverWait(driver, waitForElement)
-//                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-listen")))
-//                        .click();
-//                new WebDriverWait(driver, waitForElement)
-//                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-video_off")))
-//                        .click();
-//                new WebDriverWait(driver, waitForElement)
-//                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#preview")));
-//                driver.findElement(By.cssSelector(".sc-fvxzrP .sc-egiyK")).click();
-//            });
-//            subscribe1.dispose();
-//        });
-//        subscribe.dispose();
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -96,7 +71,11 @@ public class BbbTesterApplication {
                 .interval(Duration.ofMillis(startInterval))
                 .map(tick -> {
                     if (tick < count) {
-                        loadPage(user, tick);
+                        try {
+                            loadPage(user, tick);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         return "---===>>> loading " + user + tick;
                     }
                     return "All users are logged in.";
