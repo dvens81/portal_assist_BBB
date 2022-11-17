@@ -47,25 +47,25 @@ public class BbbTesterApplication {
             driver.switchTo().window(tabs.get(tabs.size() - 1));
         }
         driver.get(bbbUrl);
-        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
-        Disposable subscribe = usernameEd.subscribe(uname -> {
-            uname.sendKeys(userName);
-            Mono<WebElement> joinBtn = Mono.just(driver.findElement(By.cssSelector(".submit_btn")));
-            Disposable subscribe1 = joinBtn.subscribe(jn -> {
-                jn.submit();
-                new WebDriverWait(driver, waitForElement)
-                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-listen")))
-                        .click();
-                new WebDriverWait(driver, waitForElement)
-                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-video_off")))
-                        .click();
-                new WebDriverWait(driver, waitForElement)
-                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#preview")));
-                driver.findElement(By.cssSelector(".sc-fvxzrP .sc-egiyK")).click();
-            });
-            subscribe1.dispose();
-        });
-        subscribe.dispose();
+//        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
+//        Disposable subscribe = usernameEd.subscribe(uname -> {
+//            uname.sendKeys(userName);
+//            Mono<WebElement> joinBtn = Mono.just(driver.findElement(By.cssSelector(".submit_btn")));
+//            Disposable subscribe1 = joinBtn.subscribe(jn -> {
+//                jn.submit();
+//                new WebDriverWait(driver, waitForElement)
+//                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-listen")))
+//                        .click();
+//                new WebDriverWait(driver, waitForElement)
+//                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".icon-bbb-video_off")))
+//                        .click();
+//                new WebDriverWait(driver, waitForElement)
+//                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#preview")));
+//                driver.findElement(By.cssSelector(".sc-fvxzrP .sc-egiyK")).click();
+//            });
+//            subscribe1.dispose();
+//        });
+//        subscribe.dispose();
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -157,13 +157,13 @@ public class BbbTesterApplication {
                             //System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
                             ChromeOptions options = new ChromeOptions();
                             options.addArguments("-ignore-certificate-errors");
-                            options.addArguments("--use-fake-device-for-media-stream --use-file-for-fake-video-capture=C:\\Download\\ffmpeg\\bin\\output.mjpeg");
+                            options.addArguments("--use-fake-device-for-media-stream --use-file-for-fake-video-capture=C:\\Download\\ffmpeg\\bin\\output3.mjpeg");
                             options.addArguments("use-fake-ui-for-media-stream");
-                            options.addArguments("--headless");
+                            //options.addArguments("--headless");
                             //options.addArguments("use-fake-device-for-media-stream");
                             driver = new ChromeDriver(options);
                             driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-                            //driver.manage().window().maximize();
+                            driver.manage().window().maximize();
 
                             break;
                         case "start":
