@@ -47,9 +47,13 @@ public class BbbTesterApplication {
             driver.switchTo().window(tabs.get(tabs.size() - 1));
         }
         driver.get(bbbUrl);
-        new WebDriverWait(driver, waitForElement)
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#new-toolbox .audio-preview [fill-rule=evenodd]")))
-                .click();
+        WebElement toolbox = driver.findElement(By.cssSelector(".new-toolbox"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.position='static';", toolbox);
+        driver.findElement(By.cssSelector(".audio-preview .toolbox-button")).click();
+//        new WebDriverWait(driver, waitForElement)
+////                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#new-toolbox .audio-preview [fill-rule=evenodd]")))
+////                .click();
+
 //        Mono<WebElement> usernameEd = Mono.just(driver.findElement(By.name("username")));
 //        Disposable subscribe = usernameEd.subscribe(uname -> {
 //            uname.sendKeys(userName);
