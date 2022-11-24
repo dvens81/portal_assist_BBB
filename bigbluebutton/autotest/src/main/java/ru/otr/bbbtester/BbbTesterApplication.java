@@ -157,13 +157,13 @@ public class BbbTesterApplication {
                             //System.setProperty("webdriver.chrome.driver", "webdriver/" + driverName);
                             ChromeOptions options = new ChromeOptions();
                             options.addArguments("-ignore-certificate-errors");
-                            options.addArguments("--use-fake-device-for-media-stream --use-file-for-fake-video-capture=C:\\Download\\ffmpeg\\bin\\output.mjpeg");
+                            options.addArguments("--use-fake-device-for-media-stream --use-file-for-fake-video-capture=C:\\Download\\ffmpeg\\bin\\output3.mjpeg");
                             options.addArguments("use-fake-ui-for-media-stream");
-                            options.addArguments("--headless");
+                            //options.addArguments("--headless");
                             //options.addArguments("use-fake-device-for-media-stream");
                             driver = new ChromeDriver(options);
                             driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-                            //driver.manage().window().maximize();
+                            driver.manage().window().maximize();
 
                             break;
                         case "start":
